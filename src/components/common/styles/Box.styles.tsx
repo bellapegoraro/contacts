@@ -8,6 +8,7 @@ export const Box = styled(Grid)(() => ({
   boxShadow: "3px 3px 12px -6px rgba(0,0,0,0.75)",
   display: "grid",
   flexDirection: "column",
-  height: "fit-content",
+  // height: "fit-content",
   alignSelf: "center",
+  backgroundColor: "#ffffff",
 }));
