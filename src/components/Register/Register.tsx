@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Alert, Button, Container, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { Box } from "../common/Box/Box.styles";
-import { useEffect, useState } from "react";
-import { redirect } from "react-router-dom";
+import { Box } from "../common/styles/Box.styles";
 import Banner from "./Banner";
 
 type TUserInformation = {
@@ -17,6 +18,7 @@ type TError = {
 };
 
 function Register(): JSX.Element {
+  const navigate = useNavigate();
   const [userInformation, setUserInformation] = useState<TUserInformation>({
     email: "",
     password: "",
@@ -30,11 +32,8 @@ function Register(): JSX.Element {
     const hasEmailRegistered = users.filter(
       ({ email }) => email === userInformation.email
     );
-    console.log("hasEmailRegistered", hasEmailRegistered);
 
     if (!hasEmailRegistered.length) {
-      console.log("users", users);
-
       const updatedUsers = [...users, userInformation];
       setUsers(updatedUsers);
 
@@ -46,7 +45,7 @@ function Register(): JSX.Element {
         setAlert(false);
       }, 4000);
 
-      redirect("/login");
+      navigate("/");
     } else {
       setError({
         ...error,
@@ -116,7 +115,7 @@ function Register(): JSX.Element {
               });
             }}
           />
-          <Button variant="contained" onClick={handleRegister}>
+          <Button variant="outlined" onClick={handleRegister}>
             Criar conta
           </Button>
         </Box>
