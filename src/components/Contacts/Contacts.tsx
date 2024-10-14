@@ -1,35 +1,49 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Box as BoxMaterial,
   Button,
-  Card,
-  CardActions,
-  CardContent,
   Container,
   Grid2,
   Typography,
 } from "@mui/material";
+
 import { Box } from "../common/styles/Box.styles";
-import { useEffect, useState } from "react";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 import AddContacts from "./AddContacts";
 import { CONTACT_INFORMATION, TContact } from "./AddContacts/AddContacts";
+import CardContacts from "./CardContacts";
 
 function Contacts(): JSX.Element {
-  const [contactsList, setContactsList] = useState([]);
+  const [contactsList, setContactsList] = useState<TContact[]>([]);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [contactInformation, setContactInformation] = useState<TContact>({
     ...CONTACT_INFORMATION,
   });
+
+  const navigate = useNavigate();
+
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
+
   useEffect(() => {
     const storedData = localStorage.getItem("contacts");
+
     if (storedData) {
       setContactsList(JSON.parse(storedData));
     }
-  }, []);
+  }, [openDialog]);
+
+  useEffect(() => {
+    const currentUser = localStorage.getItem("currentUser");
+
+    if (!currentUser) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <Container style={{ height: "100vh" }}>
@@ -42,38 +56,10 @@ function Contacts(): JSX.Element {
             {contactsList.length === 0 && (
               <InfoBox setOpenDialog={setOpenDialog} />
             )}
-            {contactsList.length > 0 &&
-              contactsList.map(
-                (
-                  { address, name, uf, city, number, cep, complement },
-                  index
-                ) => (
-                  <Card>
-                    <CardContent>
-                      <Typography>{name}</Typography>
-                      <Typography>
-                        {address} - {number}, {cep}
-                      </Typography>
-
-                      <Typography>
-                        {city} - {uf}
-                      </Typography>
-
-                      <Typography>{complement}</Typography>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          onClick={() =>
-                            setContactInformation(contactsList[index])
-                          }
-                        >
-                          Ver no mapa
-                        </Button>
-                      </CardActions>
-                    </CardContent>
-                  </Card>
-                )
-              )}
+            <CardContacts
+              contactsList={contactsList}
+              setContactInformation={setContactInformation}
+            />
             <Button variant="outlined" onClick={handleOpenDialog}>
               Adicionar contato
             </Button>
