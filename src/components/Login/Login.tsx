@@ -35,6 +35,7 @@ function Login(): JSX.Element {
     );
 
     if (registered?.email && registered.password === userInformation.password) {
+      localStorage.setItem("currentUser", JSON.stringify(registered));
       navigate("/contatos");
     } else {
       setError({
