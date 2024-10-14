@@ -142,9 +142,9 @@ function AddContacts({
           const response = await fetch(
             `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
               endereco[0]
-            )},${encodeURIComponent(
-              endereco[1]
-            )}&components=country:BR&key=AIzaSyDjchWJHf1z2mEE_VoThHFDPnI9LXPxqr0`
+            )},${encodeURIComponent(endereco[1])}&components=country:BR&key=${
+              process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+            }`
           );
 
           const data = await response.json();

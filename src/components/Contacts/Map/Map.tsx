@@ -18,9 +18,14 @@ type TMapProps = {
 function Map({ contactInformation }: TMapProps): JSX.Element {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDjchWJHf1z2mEE_VoThHFDPnI9LXPxqr0",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
   });
 
+  console.log(
+    "process.env.REACT_APP_GOOGLE_MAPS_API_KEY",
+    process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    process.env.NODE_ENV
+  );
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
