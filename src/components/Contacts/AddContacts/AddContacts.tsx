@@ -57,7 +57,10 @@ function AddContacts({
     setOpenDialog(false);
   };
 
-  const handleCreateContact = () => {
+  const handleCreateContact = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     const hasContactRegistered = contactsList.filter(
       ({ cpf }) => cpf === contactInformation.cpf
     );
@@ -106,11 +109,10 @@ function AddContacts({
           `https://viacep.com.br/ws/${contactInformation.cep}/json/`
         );
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`Erro na API: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("data", data);
 
         setContactInformation({
           ...CONTACT_INFORMATION,
@@ -306,7 +308,7 @@ function AddContacts({
             });
           }}
         />
-        <Button variant="outlined" onClick={handleCreateContact}>
+        <Button variant="outlined" onClick={handleCreateContact} type="submit">
           Criar contato
         </Button>
       </DialogContent>
